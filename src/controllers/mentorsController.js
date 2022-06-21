@@ -14,7 +14,8 @@ exports.create = async (req, res) => {
 
     const mentor = new Mentor(value);
     await mentor.save();
-    res.send({ status: "success", data: mentor });
+    const token = await mentor.generateAuthToken()
+    res.send({ status: "success", data: {mentor, token} });
   } catch (error) {
     if (error.code) {
       res
@@ -30,18 +31,11 @@ exports.create = async (req, res) => {
 };
 
 exports.login = async (req, res) => {
+  const {email, password} = req.body
   try {
-    const mentor = await Mentor.findOne({
-      email: req.body.email,
-      password: req.body.password,
-    });
-    if (!mentor) {
-      res
-        .status(401)
-        .send({ status: "error", message: "Invalid email or password" });
-      return;
-    }
-    res.send(mentor);
+    const mentor = await Mentor.findByCredentials(email, password);
+    const token = await mentor.generateAuthToken()
+    res.send({mentor, token})
   } catch (error) {
     res.status(400).send({
       status: "error",
@@ -50,10 +44,36 @@ exports.login = async (req, res) => {
   }
 };
 
+exports.logout = async (req, res) => {
+  try {
+    req.mentor.tokens = req.mentor.tokens.filter((token)=> {
+      return token.token !== req.token
+    })
+    await req.mentor.save()
+    res.status(200).send({status: "success", message: "logout successfully"})
+  } catch (error) {
+    res.status(500).ssend({status: "error", message: "Logout error"})
+  }
+};
+
+
+exports.logoutAll = async (req, res) => {
+  try {
+    req.mentor.tokens = []
+    await req.mentor.save()
+     res.status(200).send({ status: "success", message: "logout successfully from all devices" });
+  } catch (error) {
+    res.status(500).ssend({ status: "error", message: "Logout error" });
+  }
+};
+
 exports.update = async (req, res) => {
   const updates = Object.keys(req.body);
   const { id } = req.params;
   try {
+    if (req.mentor._id.toString() !== id) {
+      throw new Error("You cannot perform this update");
+    }
     const { error, value } = updateValidator.validate(req.body);
     if (error) {
       res.status(400).send({ status: "error", message: error.message });
