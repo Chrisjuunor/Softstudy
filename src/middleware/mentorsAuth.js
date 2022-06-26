@@ -4,9 +4,8 @@ const { JWT_SECRET } = require("../utils/secrets");
 
 const mentorsAuth = async (req, res, next) => {
   try {
-    const token = req.header["Authorization"].splice(7);
+    const token = req.header("Authorization").slice(7);
     const decoded = jwt.verify(token, JWT_SECRET);
-
     const mentor = await Mentor.findOne({_id: decoded._id,"tokens.token": token});
     if(!mentor){
       throw new Error()

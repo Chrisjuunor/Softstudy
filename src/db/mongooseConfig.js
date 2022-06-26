@@ -1,8 +1,10 @@
-const mongoose = require("mongoose")
+const mongoose = require("mongoose");
+const { MONGODB_URL } = require("../utils/secrets");
 
-
-async function main() {
-  await mongoose.connect("mongodb://localhost:27017/softStudy");
-  console.log("Database connected!")
-}
-main().catch((err) => console.log(err));
+mongoose.connect(MONGODB_URL, { useNewUrlParser: true }, (error) => {
+  if (error) {
+    console.log(error.message);
+  } else {
+    console.log("Database connected!");
+  }
+});

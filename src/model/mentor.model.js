@@ -33,6 +33,9 @@ const mentorSchema = new mongoose.Schema(
       trim: true,
       required: true,
     },
+    profileImg: {
+      type: Buffer
+    },
     tokens: [
       {
         token: {
