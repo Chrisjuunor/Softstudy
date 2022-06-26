@@ -15,6 +15,10 @@ app.use("/api/mentors", mentorsRouter);
 app.use("/api/courses", coursesRouter);
 app.use("/api", lessonsRouter);
 
+app.get("/", (req, res)=> {
+  res.send({message: "API is working fine"})
+})
+
 app.use((error, req, res, next) => {
   res
     .status(error.statusCode || 500)
