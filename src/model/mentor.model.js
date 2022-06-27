@@ -34,7 +34,7 @@ const mentorSchema = new mongoose.Schema(
       required: true,
     },
     profileImg: {
-      type: Buffer
+      type: Buffer,
     },
     tokens: [
       {
@@ -48,7 +48,7 @@ const mentorSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-mentorSchema.methods.toJSON = function() {
+mentorSchema.methods.toJSON = function () {
   const mentor = this;
   const mentorObject = mentor.toObject();
   delete mentorObject.password;
