@@ -178,7 +178,7 @@ Request body:
  "lastName": "Doe", // required  
  "email: "johndoe@gmail.com", // required  
  "password": "1235asdf", // required  
- "dateOfBirth": "1/12/1999", // dd/mm/yy  
+ "dateOfBirth": "12/17/1999", // mm/dd/yy  
  \}
 
 Response:  

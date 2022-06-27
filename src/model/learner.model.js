@@ -1,37 +1,51 @@
 const mongoose = require("mongoose");
+const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
+const { BCRYPT_SALT, JWT_SECRET } = require("../utils/secrets");
 
-const learnerSchema = new mongoose.Schema({
-  firstName: {
-    type: String,
-    lowercase: true,
-    trim: true,
-    required: true,
+const learnerSchema = new mongoose.Schema(
+  {
+    firstName: {
+      type: String,
+      lowercase: true,
+      trim: true,
+      required: true,
+    },
+    lastName: {
+      type: String,
+      lowercase: true,
+      trim: true,
+      required: true,
+    },
+    email: {
+      type: String,
+      lowercase: true,
+      trim: true,
+      required: true,
+      unique: true,
+    },
+    password: {
+      type: String,
+      trim: true,
+      required: true,
+    },
+    dateOfBirth: {
+      type: Date,
+    },
+    profileImg: {
+      type: Buffer,
+    },
+    tokens: [
+      {
+        token: {
+          type: String,
+          required: true,
+        },
+      },
+    ],
   },
-  lastName: {
-    type: String,
-    lowercase: true,
-    trim: true,
-    required: true,
-  },
-  email: {
-    type: String,
-    lowercase: true,
-    trim: true,
-    required: true,
-    unique: true,
-  },
-  password: {
-    type: String,
-    trim: true,
-    required: true,
-  },
-  dateOfBirth: {
-    type: Date,
-  },
-  profileImg: {
-    type: Buffer
-  }
-}, {timeseries: true});
+  { timestamps: true }
+);
 
 learnerSchema.methods.toJSON = function () {
   const learner = this;

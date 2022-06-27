@@ -36,7 +36,7 @@ exports.login = async (req, res) => {
   const { email, password } = req.body;
   try {
     const mentor = await Mentor.findByCredentials(
-      email.toLowercase(),
+      email.toLowerCase(),
       password
     );
     const token = await mentor.generateAuthToken();

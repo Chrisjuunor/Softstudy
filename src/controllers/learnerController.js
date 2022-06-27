@@ -1,5 +1,8 @@
 const Learner = require("../model/learner.model");
-const { signUpValidator, updateValidator } = require("../utils/validators/learnerValidator");
+const {
+  signUpValidator,
+  updateValidator,
+} = require("../utils/validators/learnerValidator");
 
 exports.create = async (req, res) => {
   try {
@@ -7,10 +10,10 @@ exports.create = async (req, res) => {
     if (error) {
       throw new Error(error);
     }
-
-    const learner = await new Learner(value);
-    const token = await learner.generateAuthToken();
+    const learner = new Learner(value);
     await learner.save();
+    const token = await learner.generateAuthToken();
+    console.log(learner);
     res.send({ status: "success", data: { learner, token } });
   } catch (error) {
     if (error.code) {
@@ -27,18 +30,19 @@ exports.create = async (req, res) => {
 };
 
 exports.login = async (req, res) => {
+  const { email, password } = req.body;
   try {
-    const learner = await Learner.findOne({
-      email: req.body.email.toLowercase(),
-      password: req.body.password,
-    });
+    const learner = await Learner.findByCredentials(
+      email.toLowerCase(),
+      password
+    );
     if (!learner) {
       res
         .status(401)
         .send({ status: "error", message: "Invalid email or password" });
       return;
     }
-    const token = learner.generateAuthToken()
+    const token = await learner.generateAuthToken();
     res.send({ status: "success", data: { learner, token } });
   } catch (error) {
     res.status(400).send({
@@ -56,19 +60,17 @@ exports.update = async (req, res) => {
       res.status(400).send({ status: "error", message: error.message });
       return;
     }
-    const learner = req.learner
+    const learner = req.learner;
     for (const update of updates) {
       user[update] = value[update];
     }
     await learner.save();
     res.send({ status: "success", data: learner });
   } catch (error) {
-    res
-      .status(400)
-      .send({
-        status: "error",
-        message: error.message || "Failed to update user details",
-      });
+    res.status(400).send({
+      status: "error",
+      message: error.message || "Failed to update user details",
+    });
   }
 };
 
@@ -84,19 +86,17 @@ exports.addProfileImg = async (req, res) => {
     await req.learner.save();
     res.send({ status: "success", message: "Image uploaded successfully" });
   } catch (error) {
-    res
-      .status(500)
-      .send({
-        status: "error",
-        message: error.message || "failed to upload image",
-      });
+    res.status(500).send({
+      status: "error",
+      message: error.message || "failed to upload image",
+    });
   }
 };
 
 // get profile picture
 exports.getProfileImg = async (req, res) => {
   try {
-    const learner = req.learner
+    const learner = req.learner;
     if (!learner.profileImg) {
       return res
         .status(404)
@@ -117,12 +117,10 @@ exports.removeProfileImg = async (req, res) => {
     await req.learner.save();
     res.send({ status: "success", message: "Profile image deleted" });
   } catch (error) {
-    res
-      .status(500)
-      .send({
-        status: "error",
-        message: error.message || "failed to delete profile image",
-      });
+    res.status(500).send({
+      status: "error",
+      message: error.message || "failed to delete profile image",
+    });
   }
 };
 
@@ -142,12 +140,10 @@ exports.logoutAll = async (req, res) => {
   try {
     req.learner.tokens = [];
     await req.learner.save();
-    res
-      .status(200)
-      .send({
-        status: "success",
-        message: "logout successfully from all devices",
-      });
+    res.status(200).send({
+      status: "success",
+      message: "logout successfully from all devices",
+    });
   } catch (error) {
     res.status(500).ssend({ status: "error", message: "Logout error" });
   }
