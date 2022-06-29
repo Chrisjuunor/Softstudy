@@ -20,6 +20,6 @@ router.delete(
 router.post("/me/logout", learnersAuth, learnerController.logout);
 router.post("/me/logout-all", learnersAuth, learnerController.logoutAll);
 router.patch("/me/update", learnersAuth, learnerController.update);
-router.post("/me/change-password", learnersAuth, learnerController.changePassword);
+router.patch("/me/change-password", learnersAuth, learnerController.changePassword);
 
 module.exports = router;

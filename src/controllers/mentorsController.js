@@ -1,11 +1,11 @@
 const Mentor = require("../model/mentor.model");
+const bcrypt = require("bcrypt")
 // const sharp = require("sharp");
 
 const {
   signUpValidator,
   updateValidator,
 } = require("../utils/validators/mentorValidator");
-const jwt = require("jsonwebtoken");
 
 exports.create = async (req, res) => {
   try {
@@ -14,12 +14,13 @@ exports.create = async (req, res) => {
       throw new Error(error);
     }
 
-    const mentor = new Mentor(value);
+    const mentor = await new Mentor(value);
     await mentor.save();
     const token = await mentor.generateAuthToken();
-    res.send({ status: "success", data: { mentor, token } });
+    res.status(201).send({ status: "success", data: { mentor, token } });
   } catch (error) {
-    if (error.code) {
+    console.log(error)
+    if (error.code === 11000) {
       res
         .status(400)
         .send({ status: "error", message: "Email already exist!" });
@@ -160,7 +161,8 @@ exports.changePassword = async (req, res) => {
   const { currentPassword, newPassword } = req.body;
   try {
     const mentor = req.mentor;
-    if (mentor.password === currentPassword) {
+    const isMatch = await bcrypt.compare(currentPassword, mentor.password)
+    if (isMatch) {
       mentor.password = newPassword;
       await mentor.save();
       res.send({

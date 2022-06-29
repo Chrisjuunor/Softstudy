@@ -1,6 +1,7 @@
 const express = require("express");
 require("./db/mongooseConfig");
 const cors = require("cors");
+const swagger = require("./Docs/swagger")
 const learnersRouter = require("./routers/learners.router");
 const mentorsRouter = require("./routers/mentors.router");
 const coursesRouter = require("./routers/courses.router");
@@ -15,6 +16,7 @@ app.use("/api/mentors", mentorsRouter);
 app.use("/api/courses", coursesRouter);
 app.use("/api", lessonsRouter);
 
+swagger(app)
 app.get("/", (req, res)=> {
   res.send({message: "API is working fine"})
 })

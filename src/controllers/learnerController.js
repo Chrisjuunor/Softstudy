@@ -1,4 +1,5 @@
 const Learner = require("../model/learner.model");
+const bcrypt = require("bcrypt")
 const {
   signUpValidator,
   updateValidator,
@@ -10,13 +11,12 @@ exports.create = async (req, res) => {
     if (error) {
       throw new Error(error);
     }
-    const learner = new Learner(value);
+    const learner = await new Learner(value);
     await learner.save();
     const token = await learner.generateAuthToken();
-    console.log(learner);
-    res.send({ status: "success", data: { learner, token } });
+    res.status(201).send({ status: "success", data: { learner, token } });
   } catch (error) {
-    if (error.code) {
+    if (error.code === 11000) {
       res
         .status(400)
         .send({ status: "error", message: "Email already exist!" });
@@ -148,11 +148,12 @@ exports.logoutAll = async (req, res) => {
     res.status(500).ssend({ status: "error", message: "Logout error" });
   }
 };
-exports.changePassword = (req, res) => {
+exports.changePassword = async (req, res) => {
   const { currentPassword, newPassword } = req.body;
   try {
     const learner = req.learner;
-    if (learner.password === currentPassword) {
+    const isMatch = await bcrypt.compare(currentPassword, learner.password)
+    if (isMatch) {
       learner.password = newPassword;
       learner.save();
       res.send({

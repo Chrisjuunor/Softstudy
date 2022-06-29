@@ -16,7 +16,7 @@ router.delete("/me/profile-img", mentorsAuth, mentorsController.removeProfileImg
 router.post("/me/logout", mentorsAuth,mentorsController.logout);
 router.post("/me/logout-all", mentorsAuth,mentorsController.logoutAll);
 router.patch("/me/update", mentorsAuth,mentorsController.update);
-router.post("/me/change-password", mentorsAuth, mentorsController.changePassword);
+router.patch("/me/change-password", mentorsAuth, mentorsController.changePassword);
 // router.post("/forgot-password", mentorsAuth, mentorsController.forgotPassword);
 // router.post("/reset-password/:id/:token", mentorsAuth, mentorsController.resetPassword);
 
