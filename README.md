@@ -287,7 +287,7 @@ data: \{
 
 Request body:  
  \{  
- "currentPassword": "John1235",  
+ "currentPassword": "1235asdf",  
  "newPassword": "Doeasd12",    
  \}
 
