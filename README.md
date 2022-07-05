@@ -428,7 +428,7 @@ Response:
 ### POST base_url/api/:course_id/add-lesson  
   - Adds a lesson to a course. You have to be logged in as a mentor.  
 
-equest body:  
+Request body:  
  \{  
  "title": "Node course", // required  
  "description": "This is a node course for beginners", // required  
@@ -460,3 +460,86 @@ Response:
 status: "success",  
 message: "Banner uploaded successfully"  
 \} 
+
+### POST base_url/api/notes
+- Creates a new note for a learner. you must eb logged in as a learner.
+
+  Request body:<br/>
+  \{<br/>
+  "title": "node class",<br/>
+  "content": "content for node class"<br/>
+  \}
+  
+  Response:<br/>
+  \{<br/>
+    "title": "string"<br/>
+    "content": "string"<br/>
+    "learnerId": "string",<br/>
+    "_id": "string",<br/>
+    "createdAt": "Timestamp",<br/>
+    "updatedAt": "Timestamp",<br/>
+  \}
+  
+  
+### GET base_url/api/notes
+- Returns all learner notes. Learner must be logged in
+
+Response:<br/>
+  \[<br/>
+    {<br/>
+        "_id": "string",<br/>
+        "title": "string",<br/>
+        "content": "string",<br/>
+        "createdAt": "Timestamp",<br/>
+        "updatedAt": "Timestamp",<br/>   
+    },<br/>
+    {<br/>
+        "_id": "string",<br/>
+        "title": "String",<br/>
+        "content": "String",<br/>
+        "learnerId": "String",<br/>
+        "createdAt": "Tinmestamp",<br/>
+        "updatedAt": "Timestamp",<br/>
+    }<br/>
+  \]
+  
+### GET base_url/api/notes/:note_id
+- returns a single note specified by id. learner must be logged in
+
+Response:<br/>
+  \{<br/>
+    "_id": "String",<br/>
+    "title": "String",<br/>
+    "content": "String",<br/>
+    "learnerId": "String",<br/>
+    "createdAt": "Timestamp",<br/>
+    "updatedAt": "Timestamp",<br/>
+\}
+
+
+### PATCH base_url/api/note/:note_id
+- updates a learners note. 
+
+Request:<br/>
+  \{<br/>
+    "title": "note1",<br/>
+    "content": "this is the learners first node note"<br/>
+  \}
+  
+Response:<br/>
+  \{<br/>
+     "_id": "String",<br/>
+    "title": "String",<br/>
+    "content": "String",<br/>
+    "learnerId": "String",<br/>
+    "createdAt": "Timestamp",<br/>
+    "updatedAt": "Timestamp",<br/>
+  \}
+
+### DELETE base_url/api/note/:note_id
+- deletes learner's note. Learner must be logged in
+
+Response:<br/>
+  \{<br/>
+    "message": "note deleted succesfully<br/>
+  \}
