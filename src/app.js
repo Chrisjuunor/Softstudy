@@ -6,6 +6,7 @@ const learnersRouter = require("./routers/learners.router");
 const mentorsRouter = require("./routers/mentors.router");
 const coursesRouter = require("./routers/courses.router");
 const lessonsRouter = require("./routers/lessons.router");
+const notesRouter = require("./routers/notes.router")
 const app = express();
 
 app.use(cors());
@@ -15,6 +16,7 @@ app.use("/api/learners", learnersRouter);
 app.use("/api/mentors", mentorsRouter);
 app.use("/api/courses", coursesRouter);
 app.use("/api", lessonsRouter);
+app.use("/api", notesRouter);
 
 swagger(app)
 app.get("/", (req, res)=> {

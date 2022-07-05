@@ -74,7 +74,7 @@ learnerSchema.statics.findByCredentials = async (email, password) => {
   if (!isMatch) {
     throw new Error("Invalid email or password");
   }
-  return learner;
+  return learner;  
 };
 
 learnerSchema.pre("save", async function (next) {
