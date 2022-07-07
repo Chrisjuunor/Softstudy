@@ -1,4 +1,4 @@
-module.exports= {
+module.exports = {
   post: {
     summary: "sign up learners",
     description: "This endpoint creates or add learners into the system",
@@ -14,6 +14,18 @@ module.exports= {
                 type: "string",
                 required: true,
               },
+              lastName: {
+                type: "string",
+                required: true,
+              },
+              email: {
+                type: "string",
+                required: true,
+              },
+            },
+            example: {
+              firstName: "John",
+              lastName: "Doe",
             },
           },
         },
@@ -28,8 +40,16 @@ module.exports= {
           "application/json": {
             schema: {
               type: "object",
-              items: {
-                type: "string",
+              example: {
+                // $ref:"#/components/schemas/learners/example"
+                status: "success",
+                data: {
+                  firstName: "John",
+                  lastName: "Doe",
+                  email: "johndoe@example.com",
+                  dateOfBirth: "mm/dd/yyyy",
+                  token: "string",
+                },
               },
             },
           },

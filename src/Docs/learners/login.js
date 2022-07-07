@@ -15,9 +15,9 @@ const login = {
                 required: true,
               },
               password: {
-                type:"string",
-                requered: true
-              }
+                type: "string",
+                requered: true,
+              },
             },
           },
         },
@@ -27,13 +27,21 @@ const login = {
       200: {
         summary: "success",
         description:
-          "This response indicates that the learner was added successfully",
+          "This response indicates that the learner was logged in successfully",
         content: {
           "application/json": {
             schema: {
               type: "object",
-              items: {
-                type: "string",
+              example: {
+                // $ref:"#/components/schemas/learners/example"
+                status:"success",
+                data:{
+                  firstName: "John",
+                  lastName: "Doe",
+                  email: "johndoe@example.com",
+                  dateOfBirth: "mm/dd/yyyy",
+                  token:"string"
+                }
               },
             },
           },
@@ -43,4 +51,4 @@ const login = {
   },
 };
 
-module.exports = login
+module.exports = login;

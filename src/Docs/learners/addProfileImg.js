@@ -1,27 +1,24 @@
 module.exports = {
-  patch: {
-    summary: "Learners can update their password",
+  post: {
+    summary: "Adds an image to a learners profile. Image size should be 1mb or less",
     tags: ["Learners"],
-    security:[{
-      "learnerAuth":[]
-    }],
+    security: [
+      {
+        learnerAuth: [],
+      },
+    ],
     requestBody: {
       required: true,
       content: {
-        "application/json": {
+        "multipart/form-data": {
           schema: {
             type: "object",
             properties: {
-              currentPassword: {
-                type: "string",
+              file: {
+                type: "file",
+                description: "image to use as a profile image",
+                format: "binary"
               },
-              newPassword: {
-                type: "string",
-              },
-            },
-            example: {
-              currentPassword: "pass1254",
-              newPassword: "newpass1254",
             },
           },
         },
@@ -29,7 +26,7 @@ module.exports = {
     },
     responses: {
       200: {
-        description: "Password changed successfully",
+        description: "Image uploaded successfully",
         content: {
           "application/json": {
             schema: {
@@ -44,15 +41,15 @@ module.exports = {
               },
               example: {
                 status: "success",
-                message: "Password changed successfully",
+                message: "Image uploaded successfully",
               },
             },
           },
         },
       },
       401: {
-        $ref: "#/components/responses/UnauthorizedError"
-      }
+        $ref: "#/components/responses/UnauthorizedError",
+      },
     },
   },
 };
