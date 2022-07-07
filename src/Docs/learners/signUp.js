@@ -26,6 +26,9 @@ module.exports = {
             example: {
               firstName: "John",
               lastName: "Doe",
+              email: "johndoe@example.com",
+              password: "12234john",
+              dateOfBirth: "mm/dd/yyyy",
             },
           },
         },
