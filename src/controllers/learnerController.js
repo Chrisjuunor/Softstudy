@@ -1,13 +1,14 @@
 const Learner = require("../model/learner.model");
-const bcrypt = require("bcrypt")
+const bcrypt = require("bcrypt");
 const {
-  signUpValidator,
-  updateValidator,
+  signUpSchema,
+  updateSchema,
+  personalityTestSchema,
 } = require("../utils/validators/learnerValidator");
 
 exports.create = async (req, res) => {
   try {
-    const { error, value } = signUpValidator.validate(req.body);
+    const { error, value } = signUpSchema.validate(req.body);
     if (error) {
       throw new Error(error);
     }
@@ -51,11 +52,13 @@ exports.login = async (req, res) => {
     });
   }
 };
-
+exports.getLearnerDetails = (req, res) => {
+res.send(req.learner)
+}
 exports.update = async (req, res) => {
   const updates = Object.keys(req.body);
   try {
-    const { error, value } = updateValidator.validate(req.body);
+    const { error, value } = updateSchema.validate(req.body);
     if (error) {
       res.status(400).send({ status: "error", message: error.message });
       return;
@@ -124,6 +127,23 @@ exports.removeProfileImg = async (req, res) => {
   }
 };
 
+exports.addPersonalityTest = async (req, res) => {
+  const { error, value } = personalityTestSchema.validate(req.body);
+  if (error) {
+    return res.status(404).send({ status: "error", message: error.message });
+  }
+
+  try {
+    req.learner.personalityTest = value;
+    await req.learner.save();
+    res.send({
+      status: "success",
+      message: "Learner personality test successfully added",
+    });
+  } catch (error) {
+    res.status(500).send({ status: "error", message: error.message });
+  }
+};
 exports.logout = async (req, res) => {
   try {
     req.learner.tokens = req.learner.tokens.filter((token) => {
@@ -152,7 +172,7 @@ exports.changePassword = async (req, res) => {
   const { currentPassword, newPassword } = req.body;
   try {
     const learner = req.learner;
-    const isMatch = await bcrypt.compare(currentPassword, learner.password)
+    const isMatch = await bcrypt.compare(currentPassword, learner.password);
     if (isMatch) {
       learner.password = newPassword;
       learner.save();

@@ -9,20 +9,20 @@ module.exports = {
         "application/json": {
           schema: {
             type: "object",
-            properties: {
-              firstName: {
-                type: "string",
-                required: true,
-              },
-              lastName: {
-                type: "string",
-                required: true,
-              },
-              email: {
-                type: "string",
-                required: true,
-              },
-            },
+            // properties: {
+            //   firstName: {
+            //     type: "string",
+            //     required: true,
+            //   },
+            //   lastName: {
+            //     type: "string",
+            //     required: true,
+            //   },
+            //   email: {
+            //     type: "string",
+            //     required: true,
+            //   },
+            // },
             example: {
               firstName: "John",
               lastName: "Doe",

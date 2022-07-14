@@ -17,6 +17,8 @@ router.delete(
   learnersAuth,
   learnerController.removeProfileImg
 );
+router.get("/me", learnersAuth, learnerController.getLearnerDetails);
+router.post("/me/personality-test", learnersAuth, learnerController.addPersonalityTest);
 router.post("/me/logout", learnersAuth, learnerController.logout);
 router.post("/me/logout-all", learnersAuth, learnerController.logoutAll);
 router.patch("/me/update", learnersAuth, learnerController.update);

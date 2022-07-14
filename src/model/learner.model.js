@@ -35,6 +35,9 @@ const learnerSchema = new mongoose.Schema(
     profileImg: {
       type: Buffer,
     },
+    personalityTest: {
+      type: Object
+    },
     tokens: [
       {
         token: {
